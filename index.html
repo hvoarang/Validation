@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Validation &lt;form&gt;</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/2.0.0/modern-normalize.min.css"
+    />
+    <link rel="stylesheet" href="./style/style.css" />
+  </head>
+
+  <body class="body">
+    <div class="container">
+      <div class="links">
+        <a href="#title-1">Атрибуты валидации</a>
+        <a href="#title-2">Обязательные поля</a>
+        <a href="#title-3">Ограничение по длине</a>
+        <a href="#title-4">Ограничение значения</a>
+        <a href="#title-5">Регулярное выражение</a>
+        <a href="#title-6">Псевдоклассы состояния</a>
+      </div>
+
+      <h2 class="title">Валидация</h2>
+      <p>
+        Каждый раз при заполнении полей формы не в том формате который они
+        ожидают, мы получаем обратную связь в виде оповещений. Так работают
+        формы регистрации, оформления заказа и любые другие где важен формат
+        вводимых данных. <br /><br />
+        Это называется <b>валидация формы</b> - проверка корректности вводимых
+        значений. Если данные верны, форма будет отправлена, в противном случае
+        будет отображено сообщение об ошибке, обьясняющее необходимые правки.
+        <br /><br />
+        Существует два вида валидации - на клиенте (в браузере) и на сервере
+        (бэкэнде). На практике эти два подхода всегда используются вместе.
+      </p>
+      <img src="./images/validation.png" width="1200" class="img" />
+      <p>
+        <b>Валидация на клиенте</b> - это проверка, которая происходит в
+        браузере, прежде чем данные формы будут отправлены на сервер. Это удобно
+        для UX (user experience), так как пользователь мгновенно получает
+        обратную связь в процессе или сразу после ввода значения в поле.
+        <br /><br />
+        <b>Валидация на сервере</b> - это последняя линия защиты веб-приложения
+        от неправильных или вредоносных данных. Проверка, которая выполняется на
+        бэкэнде, после отправки данных и перед их сохранением в базе данных.
+        Если данные не проходят проверку валидности, ответ отправляется обратно
+        клиенту, чтобы сообщить пользователю, какие исправления должны быть
+        сделаны.
+      </p>
+      <a name="title-1"></a>
+      <h2 class="title">Атрибуты валидации</h2>
+      <p>
+        В каждый современный браузер встроена возможность валидации содержимого
+        полей формы без использования JavaScript. Для этого используется
+        комбинация различных типов полей и их атрибутов. Если пользователь ввёл
+        невалидное значение, браузер покажет оповещение.
+      </p>
+      <p class="information">
+        Поведение встроенной валидации форм отличается между браузерами, поэтому
+        на практике используют JavaScript-библиотеки. Тем не менее, стоит знать
+        основы HTML5-валидации.
+      </p>
+      <a name="title-2"></a>
+      <h2 class="title">Обязательные поля</h2>
+      <p>
+        Логический атрибут <code>required</code> помечает поле формы как
+        обязательное для заполнения. Если поле пустое, браузер выведет сообщение
+        подсказку, а форма не будет отправлена. Внешний вид сообщения зависит от
+        браузера и не может быть изменён из CSS. Попробуйте отправить форму из
+        примера не заполняя поля почты или пароля.
+      </p>
+      <form>
+        <label>
+          Email
+          <input type="email" name="email" required />
+        </label>
+        <label>
+          Password
+          <input type="password" name="password" required />
+        </label>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <p class="information">
+        Чтобы сделать группу радиокнопок или чекбоксов обязательной, необходимо
+        задать атрибут required каждому элементу группы.
+      </p>
+      <a name="title-3"></a>
+      <h2 class="title">Ограничение по длине</h2>
+      <p>
+        Атрибуты <code>minlength</code> и <code>maxlength</code> накладывают
+        ограничения на количество вводимых символов, например для пароля или
+        имени пользователя.
+      </p>
+      <form>
+        <label>
+          Username
+          <input type="text" name="username" required minlength="3" />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            name="password"
+            required
+            minlength="6"
+            maxlength="12"
+          />
+        </label>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <a name="title-4"></a>
+      <h2 class="title">Ограничение значения</h2>
+
+      <p>
+        Атрибуты <code>min</code> и <code>max</code> позволяют проверить
+        вхождение численного значения в указанный промежуток. Могут быть
+        использованы только в полях с типом <code>number</code>,
+        <code>range</code> или <code>date</code>.
+      </p>
+      <form>
+        <label>
+          Сколько вы хотите заказать?
+          <input type="number" name="amount" required min="1" max="10" />
+        </label>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <a name="title-5"></a>
+      <h2 class="title">Регулярное выражение</h2>
+      <p>
+        Атрибут <code>pattern</code> позволяет указать регулярное выражение
+        (шаблон) относительно которого будет проверяться значение поля.
+        Используется для расширения базовой валидации. Например, если требуется
+        чтобы имя пользователя состояло из двух слов или пароль содержал хотя бы
+        один символ в верхнем регистре, один в нижнем регистре и одно число.
+      </p>
+      <p class="information">
+        <b>Регулярные выражения</b> - это специальный язык описания шаблонов,
+        который используется в языках программирования для поиска, замены или
+        проверки соответствия последовательностей символов в строках.
+      </p>
+      <p>
+        По умолчанию, при ошибке валидации, браузер отобразит стандартный текст
+        «Please match the requested format». Дополнительный текст-подсказку,
+        который будет отображен в сообщении от браузера, можно указать в
+        атрибуте <code>title</code>.
+      </p>
+      <form>
+        <label>
+          Username
+          <input
+            type="text"
+            name="text"
+            required
+            pattern="^[a-zA-Z]+\s[a-zA-Z]+$"
+            title="Username must be two words separated by space."
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            name="password"
+            required
+            minlength="6"
+            maxlength="12"
+            pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$"
+            title="Please include at least 1 uppercase character, 1 lowercase character, and 1 number."
+          />
+        </label>
+        <button class="btn" class="btn" type="submit">Submit</button>
+      </form>
+      <a name="title-6"></a>
+      <h2 class="title">Псевдоклассы состояния</h2>
+      <p>
+        Существует набор псевдоклассов, созданных специально для элементов форм,
+        и не оказывающих никакого эффекта на другие элементы. С помощью них
+        можно оформлять поля формы по состоянию валидности введённых данных или
+        обязательности заполнения.
+      </p>
+      <a name="title-7"></a>
+      <h2>  :enabled и :disabled</h2>
+      <p>
+        Позволяют выбрать элемент в активном или отключённом состоянии, которое
+        определяется наличием или отсутствием булевого атрибута disabled.
+        Применимы к элементам &lt;input&gt;, &lt;select&gt; и &lt;button&gt;.
+      </p>
+      <button class="btn">Active button</button>
+      <button class="btn" disabled>Disabled button</button>
+      <p class="information">
+        Элементы с атрибутом disabled не получают эффект фокуса, а также
+        игнорируют клики мыши. Это можно использовать например для того, чтобы
+        запретить отправку формы пока не заполнены все поля, но для этого нужен
+        JavaScript.
+      </p>
+      <h2>  :checked</h2>
+      <p>
+        Применяется к радиокнопкам и чекбоксам, и позволяет выбрать только
+        отмеченные поля. Например, пусть при выборе чекбокса текст метки
+        становится синим. Используя селектор + можно выбрать метку когда чекбокс
+        отмечен, но для этого необходимо чтобы тег &lt;label&gt; был в разметке
+        после чекбокса.
+      </p>
+
+      <p class="bg">
+        &lt;input type=&quot;checkbox&quot; name=&quot;hobby&quot;
+        value=&quot;music&quot; id=&quot;music&quot;/&gt; <br />
+        &lt;label for=&quot;music&quot;&gt;Музыка&lt;/label&gt;
+      </p>
+      <form class="form">
+        <p class="form-caption">Какое ваше хобби</p>
+
+        <div class="form-field">
+          <input
+            type="checkbox"
+            class="form-input"
+            name="hobby"
+            value="sports"
+            id="sports"
+          />
+          <label class="form-label" for="sports"> Спорт</label>
+        </div>
+
+        <div class="form-field">
+          <input
+            type="checkbox"
+            class="form-input"
+            name="hobby"
+            value="music"
+            id="music"
+          />
+          <label class="form-label" for="music"> Музыка</label>
+        </div>
+
+        <div class="form-field">
+          <input
+            type="checkbox"
+            class="form-input"
+            name="hobby"
+            value="books"
+            id="books"
+          />
+          <label class="form-label" for="books"> Книги</label>
+        </div>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <h2 class="title">:in-range и :out-of-range</h2>
+      <p>
+        Эти псевдоклассы применяются к элементам &lt;range&gt;, &lt;number&gt; и
+        &lt;date&gt;, если у них указаны атрибуты min и max. <br /><br />
+        Создадим форму заказа пиццы с полем для ввода количества штук. Если
+        ввести число меньше 1 или больше 10, цвет рамки инпута поменяется на
+        красный. Если значение остается в рамках диапазона, цвет будет зелёным.
+      </p>
+      <form class="form">
+        <div class="form-field">
+          <label for="amount-1" class="form-label"
+            >Сколько вы хотите заказать?</label
+          >
+          <input
+            type="number"
+            required
+            min="1"
+            max="10"
+            step="1"
+            value="0"
+            name="amount-1"
+            id="amount-1"
+            class="form-input"
+          />
+        </div>
+        <div class="form-field">
+          <label for="amount-2" class="form-label"
+            >Сколько вы хотите заказать?</label
+          >
+          <input
+            type="number"
+            required
+            min="1"
+            max="10"
+            step="1"
+            value="3"
+            name="amount-2"
+            id="amount-2"
+            class="form-input"
+          />
+        </div>
+        <div class="form-field">
+          <label for="amount-3" class="form-label"
+            >Сколько вы хотите заказать?</label
+          >
+          <input
+            type="number"
+            required
+            min="1"
+            max="10"
+            step="1"
+            name="amount-3"
+            id="amount-3"
+            class="form-input"
+          />
+        </div>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+
+      <p>
+        У таких селекторов есть ограничения. Цвет рамки инпута в примере сразу
+        красный если задано начальное значение меньше 1 или больше 10, и зелёный
+        если начальное значение не задано или попадаёт в отрезок от 1 до 10. То
+        есть селекторы применяются ещё до ввода какого-либо значения в поле. Как
+        решить эту проблему разберёмся дальше.
+      </p>
+
+      <h2 class="title">:required и :optional</h2>
+      <p>
+        Применяются к элементам в зависимости от наличия или отсутствия атрибута
+        required. Браузеры показывают что поле обязательно только при попытке
+        отправить форму. Псевдокласс :required позволяет оформить поле и
+        показать пользователю, что оно обязательно ещё до отправки. Псевдокласс
+        :optional на практике используется крайне редко.
+      </p>
+
+      <form class="form">
+        <label class="form-label">
+          <span class="label-text">Username (optional)</span>
+          <input type="text" class="form-input" name="username" />
+        </label>
+
+        <label class="form-label">
+          <span class="label-text">Email (required)</span>
+          <input type="email" class="form-input" name="mail" required />
+        </label>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <p class="information">
+        Проблемы такие же как и у предыдущей группы псевдоклассов - стили
+        применяются ещё до ввода какого-либо значения.
+      </p>
+      <h2 class="title">:valid и :invalid</h2>
+      <p>
+        Позволяют выбрать элементы с валидным или невалидным введённым
+        значением. Проверочные ограничения задаются атрибутами type, minlength,
+        maxlength и pattern.
+      </p>
+      <form class="form">
+        <label class="form-label">
+          <span class="label-text">Username</span>
+          <input
+            type="text"
+            class="form-input"
+            name="username"
+            required
+            minlength="3"
+          />
+        </label>
+
+        <label class="form-label">
+          <span class="label-text">Email</span>
+          <input type="email" class="form-input" name="mail" required />
+        </label>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <p class="information">
+        Проблемы такие же как и у предыдущей группы - если у поля есть атрибут
+        required, то селектор :invalid применяется ещё до ввода значения, так
+        как обязательное поле не может быть пустым.
+      </p>
+      <h2 class="title">:placeholder-shown</h2>
+      <p>
+        Применяется в зависимости от видимости плейсхолдера - значения атрибута
+        placeholder. Вводите текст в поля формы и цвет рамки поля изменится на
+        синий как только пропадёт плейсхолдер.
+      </p>
+      <form class="form">
+        <label class="form-label">
+          <span class="label-text">Username</span>
+          <input
+            type="text"
+            class="form-input"
+            name="username"
+            placeholder="Jacob Mercer"
+          />
+        </label>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <p class="information">
+        Обратите внимание на селектор .form-input::placeholder, он используется
+        для оформления текста плейсхолдера.
+      </p>
+      <h2 class="title">Композиция псевдоклассов</h2>
+      <p>
+        Проблема применения стилей до ввода значений решается комбинацией
+        нескольких псевдоклассов в одном селекторе. Составим селектор так, чтобы
+        он применился только когда в поле что-то ввели. Пока поле пустое и виден
+        плейсхолдер - стили не применятся.
+      </p>
+      <p class="bg">
+        .form-input:not(:placeholder-shown):required:valid { <br />
+        /* ... */ <br />
+        }
+      </p>
+      <ul>
+        Селектор получается громоздким, но не сложным, и применится к элементу с
+        классом
+        <b>.form-input</b
+        >.
+        <br /><br />
+
+        <li>Если элемент обязательный для заполнения - <b>:required</b>.</li>
+        <li>Введённое значение валидно - :valid.</li>
+        <li>Текст плейсхолдера не видно - <b>:not(:placeholder-shown)</b>.</li>
+
+        Как только что-то ввели и плейсхолдер пропал - происходит валидация и
+        селектор применяется к элементу. Обязательная часть этой техники -
+        наличие атрибута placeholder, значением которого может быть текст или
+        просто строка с одним пробелом, главное не пустая.
+      </ul>
+      <form class="form">
+        <label class="form-label">
+          <span class="label-text">Username</span>
+          <input
+            type="text"
+            class="form-input"
+            name="username"
+            placeholder="name lastname"
+            minlength="3"
+            required
+          />
+        </label>
+
+        <label class="form-label">
+          <span class="label-text">Email</span>
+          <input
+            type="email"
+            class="form-input"
+            name="mail"
+            placeholder="name@mail.com"
+            required
+          />
+        </label>
+
+        <button class="btn" type="submit">Submit</button>
+      </form>
+      <p class="information">
+        Для более сложной валидации и оформления результатов нужна
+        дополнительная разметка и язык программирования JavaScript. Настраивать
+        сложную валидацию в HTML нет смысла, такое решение не масштабируется и
+        плохо поддерживается.
+      </p>
+      <h2 class="title">:focus-within</h2>
+      <p>
+        Применяется к элементу когда он сам или элементы внутри него получают
+        фокус. В отличие от <b>:focus</b>, который выбирает сам элемент
+        получивший фокус, <b>:focus-within</b> работает для предков. Это
+        позволяет применить стили на метку, форму или отдельные её части, когда
+        пользователь взаимодействует с полями.
+      </p>
+      <p>
+        Добавим эффект изменения цвета рамки формы и текста связанной метки на
+        синий при получении фокуса любым полем.
+      </p>
+      <form class="form-dash">
+        <label class="form-label">
+          <span class="label-text">First name</span>
+          <input class="form-input" type="text" name="firstName" />
+        </label>
+        <label class="form-label">
+          <span class="label-text">Last name</span>
+          <input class="form-input" type="text" name="lastName" />
+        </label>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+    </div>
+
+    <script src="./js/script.js"></script>
+  </body>
+</html>
