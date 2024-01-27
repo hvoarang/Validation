@@ -7,7 +7,8 @@ body {
   margin: 0;
   font-size: 20px;
   font-family: Monaco serif;
-  background-color: #dfdfdf;
+  background-color: #bbb6b6;
+  opacity: ;
   line-height: 1.5;
 }
 
@@ -315,5 +316,19 @@ textarea {
 }
 
 /* ================================= */
+.text-field {
+  margin: 20px 0 0 20px;
+}
+
+.text-field__input:disabled,
+.text-field__input {
+  color: white;
+  background-color: #9c9c9c;
+  opacity: 1;
+}
+
+::placeholder {
+  color: #b97220;
+}
 
 /* ================================= */
